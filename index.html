@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dành cho Thảo cuteee</title>
+    <style>
+        :root {
+            --primary-color: #ff7675;
+            --bg-color: #ffeaa7;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: #2d3436;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            margin: 10px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            background-color: #d63031;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Khung nhân vật Chibi/Anime */
+        .avatar-box {
+            font-size: 80px;
+            margin: 20px 0;
+            animation: idle 2s infinite alternate;
+        }
+
+        .bubble-text {
+            background: #f1f2f6;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Các hiệu ứng hành động của nhân vật */
+        .gai-dau { animation: scratch 0.5s infinite alternate; }
+        .hon { animation: kiss 0.6s infinite alternate; }
+        .nhay { animation: dance 0.5s infinite alternate; }
+        .traitim { animation: heartbeat 0.8s infinite; font-size: 100px; }
+
+        @keyframes idle {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+        @keyframes scratch {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(15deg) translateY(-5px); }
+        }
+        @keyframes kiss {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.2); }
+        }
+        @keyframes dance {
+            0% { transform: translateY(0) rotate(-10deg); }
+            100% { transform: translateY(-20px) rotate(10deg); }
+        }
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        textarea {
+            width: 100%;
+            height: 80px;
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid #b2bec3;
+            resize: none;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- BƯỚC 1: LỰA CHỌN BAN ĐẦU -->
+    <div id="step1">
+        <h2>Thảo ơi, em đang cảm thấy thế nào? 🥺</h2>
+        <button class="btn" onclick="nextStep(2)">Em đang buồn</button>
+        <button class="btn" onclick="nextStep(2)">Em đang giận</button>
+        <button class="btn" onclick="startCompanion()">Cả hai vụ hôm qua...</button>
+    </div>
+
+    <!-- PHẦN ĐỒNG HÀNH CỦA NHÂN VẬT ANIME (CHẠY TỪ BƯỚC NÀY) -->
+    <div id="companion-zone" class="hidden">
+        <div id="avatar" class="avatar-box">🙋‍♂️</div>
+        <div id="bubble" class="bubble-text">...</div>
+
+        <!-- Các câu hỏi khảo sát -->
+        <div id="quiz-box">
+            <!-- Câu 1 -->
+            <div id="q1" class="quiz-step">
+                <p><strong>Câu 1: Nếu gặp mà đang dỗi em sẽ làm gì anh?</strong></p>
+                <button class="btn" onclick="answerQ(1, 'đánh')">Đánh</button>
+                <button class="btn" onclick="answerQ(1, 'đập')">Đập</button>
+                <button class="btn" onclick="answerQ(1, 'phớt lờ')">Phớt lờ</button>
+            </div>
+
+            <!-- Câu 2 -->
+            <div id="q2" class="quiz-step hidden">
+                <p><strong>Câu 2: Em nghĩ chúng ta sẽ gặp nhau sớm hơn 10 năm không?</strong></p>
+                <button class="btn" onclick="answerQ(2, 'có')">Có</button>
+                <button class="btn" onclick="answerQ(2, 'không')">Không</button>
+            </div>
+
+            <!-- Câu 3 -->
+            <div id="q3" class="quiz-step hidden">
+                <p><strong>Câu 3: Em nghĩ em vượt trội hơn anh trong mối quan hệ này?</strong></p>
+                <button class="btn" onclick="answerQ(3, 'có')">Có</button>
+                <button class="btn" onclick="answerQ(3, 'không')">Không</button>
+            </div>
+
+            <!-- Câu 4 -->
+            <div id="q4" class="quiz-step hidden">
+                <p><strong>Câu 4: Em đánh giá anh như một con người tổng thể như nào?</strong></p>
+                <textarea id="q4-ans" placeholder="Nhập suy nghĩ của Thảo vào đây nha..."></textarea>
+                <br>
+                <button class="btn" onclick="answerQ(4)">Tiếp tục</button>
+            </div>
+
+            <!-- Câu 5 -->
+            <div id="q5" class="quiz-step hidden">
+                <p><strong>Câu 5: Em biết làm cái này mất bao nhiêu thời gian không? 🤔</strong></p>
+                <button class="btn" onclick="finishQuiz()">Biết chứ / Không biết nữa</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- KẾT BÀI -->
+    <div id="ending" class="hidden">
+        <div class="avatar-box traitim">❤️</div>
+        <h2 style="color: #d63031;">Yêu Thảo nhé! 🥰</h2>
+        <p style="font-size: 18px; line-height: 1.6;">
+            Cảm ơn em vì đã chia sẻ với anh.<br>
+            Giờ thì bớt buồn, bớt dỗi và cười lên một cái nha! ☀️
+        </p>
+    </div>
+</div>
+
+<script>
+    const avatar = document.getElementById('avatar');
+    const bubble = document.getElementById('bubble');
+
+    // Chuyển hướng nếu chọn 2 nút đầu
+    function nextStep(step) {
+        alert("Anh biết em đang không vui mà... Chọn cái nút thứ 3 thử xem đi Thảo 🥺");
+    }
+
+    // Bắt đầu chuỗi kịch bản khi chọn "Cả hai vụ hôm qua..."
+    function startCompanion() {
+        document.getElementById('step1').classList.add('hidden');
+        document.getElementById('companion-zone').classList.remove('hidden');
+        
+        // Nói câu "Vậy ó hỏ" và gãi đầu
+        bubble.innerText = "Vậy ó hỏ... Anh biết lỗi rồi màaa 🥺";
+        setBehavior('gai-dau', '🤦‍♂️');
+
+        // Sau 3 giây đổi sang trạng thái nhảy để dỗ dành và bắt đầu hiện câu hỏi
+        setTimeout(() => {
+            bubble.innerText = "Giờ em trả lời mấy câu hỏi này cùng anh nhé!";
+            setBehavior('nhay', '🕺');
+        }, 3000);
+    }
+
+    // Hàm thay đổi hành động của nhân vật (Hôn, nhảy, gãi đầu...)
+    function setBehavior(actionClass, emoji) {
+        avatar.className = "avatar-box " + actionClass;
+        avatar.innerText = emoji;
+    }
+
+    // Xử lý các câu trả lời
+    function answerQ(questionNum, answer) {
+        // Ẩn câu hỏi hiện tại
+        document.getElementById('q' + questionNum).classList.add('hidden');
+        
+        // Thay đổi hành động theo từng câu hỏi để tạo tính tương tác sinh động
+        if (questionNum === 1) {
+            bubble.innerText = `Á chịu phạt luôn! Thôi thương anh đừng ${answer} tội nghiệp nhaaa 😘`;
+            setBehavior('hon', '😘');
+            setTimeout(() => {
+                document.getElementById('q2').classList.remove('hidden');
+                bubble.innerText = "Tiếp tục câu thứ 2 nào...";
+                setBehavior('idle', '🙋‍♂️');
+            }, 3000);
+        } 
+        else if (questionNum === 2) {
+            bubble.innerText = "Duyên số đưa tụi mình gặp nhau đúng thời điểm nè! 💖";
+            setBehavior('nhay', '🤸‍♂️');
+            setTimeout(() => {
+                document.getElementById('q3').classList.remove('hidden');
+                setBehavior('idle', '🙋‍♂️');
+            }, 2500);
+        } 
+        else if (questionNum === 3) {
+            bubble.innerText = "Nóc nhà chuẩn luôn, anh lúc nào cũng nhường Thảo hết trơn á! 😂";
+            setBehavior('gai-dau', '🙇‍♂️');
+            setTimeout(() => {
+                document.getElementById('q4').classList.remove('hidden');
+                bubble.innerText = "Nói thật lòng cho anh biết câu này đi...";
+                setBehavior('idle', '🙋‍♂️');
+            }, 3000);
+        }
+        else if (questionNum === 4) {
+            bubble.innerText = "Anh ghi nhận hết á. Câu cuối cùng nè...";
+            setBehavior('nhay', '🕺');
+            document.getElementById('q5').classList.remove('hidden');
+        }
+    }
+
+    // Kết thúc khảo sát, chuyển sang màn hình Trái tim
+    function finishQuiz() {
+        document.getElementById('companion-zone').classList.add('hidden');
+        document.getElementById('ending').classList.remove('hidden');
+    }
+</script>
+
+</body>
+</html>
